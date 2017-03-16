@@ -1,0 +1,1 @@
+xcopy * C:\WebServers\home\sale-russia\www /Y /R /E /D /H /EXCLUDE:exclude.txt

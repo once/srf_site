@@ -1,0 +1,17 @@
+AddDefaultCharset UTF-8
+Header set Access-Control-Allow-Origin "*"
+
+RewriteEngine on
+RewriteCond %{HTTP:HTTPS} !=on [NC]
+RewriteRule ^(.*)$ https://sale-russia.com/$1 [R=301,L]
+SetEnvIf X-Forwarded-Proto https HTTPS=on
+
+<FilesMatch ".(gif|jpg|jpeg|png|ico|swf|pdf)$">
+  Header set Cache-Control "max-age=900"
+</FilesMatch>
+<FilesMatch ".(js|css|html|htm|txt)$">
+  Header set Cache-Control "max-age=600"
+</FilesMatch>
+<FilesMatch ".(php|cgi|csv)$">
+  Header unset Cache-Control
+</FilesMatch>

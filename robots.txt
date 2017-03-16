@@ -1,0 +1,20 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /api/
+Disallow: /cgi-bin/
+Disallow: /content/
+Disallow: /css/
+Disallow: /fonts/
+Disallow: /images/
+Disallow: /js/
+Disallow: /resource/
+Disallow: /sass/
+Disallow: /push/
+Disallow: /statistic/
+
+Disallow: /arkhangelsk/
+Disallow: /belgorod/
+Disallow: /ryazan/
+Disallow: /vologda/
+Disallow: /tula/
+Disallow: /stavropol/

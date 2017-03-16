@@ -1,0 +1,4 @@
+.git\
+.vscode\
+exclude.txt
+.htaccess
