@@ -7,14 +7,20 @@ if (!$action) die ("No action specified");
 switch ($action) {
 
 	case 'test':
-		echo "user_push_id: " . $_POST['user_push_id'];
-		print_r(json_decode($_POST['list'], false));
+
+		echo "user_id: " . $_POST['user_id'];
+		
+		$list_data  = json_decode(json_encode($_POST['list']), false);   // double encode as we need object from array!
+		print_r($list_data);
+		echo "list id: " . $list_data->id;
 
 		break;
 	case 'put':
-		$user_push_id = $_POST['user_push_id'];
-		$list_data = json_decode($_POST['list'], false);
-		putShoppingList($user_push_id, $list_data);
+		
+		$user_id = $_POST['user_id'];
+		$list_data  = json_decode(json_encode($_POST['list']), false);   // double encode as we need object from array!
+
+		putShoppingList($user_id, $list_data);
 		break;
 
 	case 'get':
@@ -32,18 +38,16 @@ switch ($action) {
 				
 
 
-	function putShoppingList ($user_push_id, $list_data) {
+	function putShoppingList ($user_id, $list_data) {
 
 		include "../../config.php"; //Файл конфигурации БД
-
-		//print_r($list_data); die();
 
 		/* есть ли уже список с таким ИД от этого пользователя?
 		если да - апдейтим его - удаляем все item-ы, записываем новые
 		если нет - создаем новый список*/
 
 
-		$sql = mysql_query("SELECT * FROM shoppinglists WHERE owner_push_id ='".$user_push_id. "' AND owner_list_id = " . $list_data->id. ";", $db);
+		$sql = mysql_query("SELECT * FROM shoppinglists WHERE owner_id ='".$user_id. "' AND owner_list_id = " . $list_data->id. ";", $db);
 		$row = mysql_fetch_array($sql);
 
 		if (!empty($row['id'])) {
@@ -60,8 +64,9 @@ switch ($action) {
 		}
 		else {
 
+			$query_sql = "INSERT INTO shoppinglists (owner_id, owner_list_id, name) VALUES ('$user_id', '$list_data->id', '$list_data->name');";
 			
-			$query = mysql_query("INSERT INTO shoppinglists (owner_push_id, owner_list_id, name) VALUES ('" . $user_push_id . "', '". $list_data->id ."', '". $list_data->name. "');", $db);
+			$query = mysql_query($query_sql, $db);
   			
   			$existing_list_id = mysql_insert_id($db);
   		}
@@ -86,10 +91,7 @@ switch ($action) {
 
 			mysql_close($db);
 
-
-		
-
-
+			echo '{"list_id":'.$existing_list_id.'}';
 
 	}
 
